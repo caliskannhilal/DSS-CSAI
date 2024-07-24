@@ -1,0 +1,295 @@
+---
+title: 'Practical Exercise 1 | Statistics for Premasters DSS/CSAI'
+author: Hilal Caliskan u927185
+output:
+  pdf_document: default
+  word_document:
+    reference_docx: reference_tasks.docx
+---
+
+
+### Part A - Knowledge to Discuss Statistical and Methodological Concepts  
+
+__Task 1.__ For each of the following, identify the scale of measurement and _briefly explain your reasoning_. :
+
+__Task 1a.__ Temperature in degree Celsius 
+
+Temperature degree is measured on a continuous interval scale because the variable does not have a true 0 value.
+
+__Task 1b.__ Gender
+
+Gender has a nominal scale of measurement because gender has more values than two and none of them are
+better or worse than the other.
+
+__Task 1c.__ The order that runners cross the finish line in a marathon race 
+
+The order that runners cross the finish line is measured on an ordinal scale because there are more than two categories but they have a logical order.
+
+__Task 1d.__ The amount of time Bob took to solve a calculus problem
+
+The amount of time Bob took to solve a calculus problem should be measured with a ratio/interval scale.
+The numerical value is genuinely meaningful. The differences between the numbers are interpretable, and zero really means zero; therefore, it is fine to multiply and divide the values.
+
+__Task 2.__ Apply each of the following types of validity to the case, described above. You are encouraged to use your imagination. 
+
+__Task 2a.__ External validity
+
+The extent to which we can generalize the results of this study to the real population, namely young Dutch women between 20-25 years old with depression issues. When for example just using undergraduate psychology students with small mental issues as the participants, your sample has a high risk of not representative of the population. This experiment will carry a risk of lacking external validity.
+
+__Task 2b.__ Internal validity
+
+Internal validity depends on the time. If the study results are examined based on the timeframe since it is assumed that the experiment is a study that measures the relationship between cause and effect, the internal validity is fine.
+
+__Task 2c.__ Construct validity
+
+Construct validity is to show that the test is actually measuring what you want to be measuring. If you are trying to examine the effect of cognitive 
+therapy on depression, the research should have the tools and the methods in order to somehow measure the concept of “depression”.
+
+__Task 2d.__ Ecological validity
+
+The entire set up of the study should closely approximate the real world scenario that is being investigated. In the above mentioned case, this should mean that the therapy session that is considered to be the independent variable, should approximate “real world” therapy sessions. This also applies to the environment where the participants are questioned about the change in depression levels.
+
+__Task 3.__ For each of the following types of reliability, give your own example scenario that would demonstrate that reliability, and briefly explain how it does so. You do not have to limit yourself to the given case. You are allowed to use your own examples.
+
+__Task 3a.__ Inter-rater reliability
+
+Tom and Edith are two judges measuring 50 speed skaters’ time in a short track speed skating competition. If the results of the two judges were very similar, the results showed an excellent inter-rater reliability.
+
+__Task 3b.__ Test-retest reliability
+
+
+Test-retest reliability is a measure of reliability obtained by administering the same test twice over a period of time to a group of individuals. The scores from Time 1 and Time 2 can then be correlated in order to evaluate the test for stability over time. For example, a group of respondents is tested for IQ scores: each respondent is tested twice – the two tests are, say, a month apart. Then, the correlation coefficient between two sets of IQ-scores is a reasonable measure of the test-retest reliability of this test.
+
+__Task 3c.__ Internal consistency reliability
+
+Internal consistency reliability is a measure to assess the consistency of responses across items within a test or scale. It evaluates how well the items or questions in a measure are interrelated or correlated with each other.For example, if you have a survey about job satisfaction, internal consistency reliability ensures that all the questions about different aspects of the job, like work hours, relationships with colleagues, and opportunities for growth, are consistent and reliable in measuring overall job satisfaction.
+
+__Task 3d.__ Parallel forms reliability
+
+Parallel forms reliability: An experimenter developed a large set of word memory questions (i.e., list of words). He split these questions into half, and administered them to a randomly selected half of a target sample. If the results of the two sets of questions show a high correlation, this would be one indicator that the tests have a good parallel forms reliability.
+
+\vspace{5mm}
+
+
+### Part B: Knowledge and Skills Using R
+
+__Task 4a.__ Make two vectors with values: vector1 = (1,2,3,4,5,6) and vector2 = (2,2,3,3,-1,-1). After you have made these vectors, try to add these up, and explain what is happening. 
+
+```{r task4a, error=TRUE}
+
+vector1 <- c(1, 2, 3, 4, 5, 6) 
+vector2 <- c(2, 2, 3, 3, -1, -1)
+result <- vector1 + vector2
+print("Vector1:")
+
+```
+
+__Task 4b.__ Make two vectors with values: vector1 = (1,2,3,4,5,6) and vector2 = (1,2). After you have made these vectors, try to add these up, and explain what is happening. 
+
+```{r task4b, error=TRUE}
+
+vector1 <- c(1,2,3,4,5,6,)
+vector2 <- c(1,2)
+vector1 + vector2
+
+
+```
+
+__Task 4c.__ What do you think would happen if vector1 got an extra value, for example (1,2,3,4,5,6,7). Repeat the process of Task 4b, and describe what has happened, and why.
+
+```{r task4c, error=TRUE}
+
+vector1 <- c(1,2,3,4,5,6,7)
+vector2<- c(1,2)
+vector1 + vector2
+
+
+```
+
+__Task 5.__ Create a factor with the food you ate at dinner last week; please assume you ate something more than once, thus, repeat it.
+
+__HINT:__ _Use factor(x, labels)._
+
+```{r task5, error=TRUE}
+
+foodslastweek <- factor( x= c(1,2,3,4,4,5,6),
+                         labels = c('mayo', 'ketchup', 'egg', 'boerenkool', 'spaghetti', 'pizza'))
+                         
+                         foodslastweek
+                         
+                       
+                
+
+```
+
+__Task 6.__ Create a simple Body-Mass-Index (BMI) calculator using R code, and put in some values for weight and height to play around with. The formula for calculating BMI is: weight in kilograms / (height in meters)^2
+
+```{r task6, error=TRUE}
+
+weight <- 100
+  
+height <- 185
+  
+  height_in_meters <- height * 0.01
+
+bmi <- weight / height_in_meters ^ 2
+
+bmi
+
+```
+
+\vspace{5mm}
+
+
+### Part C: Looking at Descriptives in R
+
+__Task 7.__ Load data from the following comma-separated-value (csv) file using read.csv(): Statistics_survey_PMBA_2017_PU2_reduced.csv. The file is included in the PE 1 zip folder you downloaded from Canvas. Take a quick look at the data using summary(), and try to get a basic understanding of what the data is about.
+
+__HINT:__ _Add "stringsAsFactors=TRUE" as a parameter to the read.csv() function and run this block again if your summary() output is not as expected_
+
+```{r task7, error=TRUE}
+
+dtvfile <- read.csv('/Users/hilalcaliskan/Documents/PM_DSS_ Assignments/CSAI/Practical Exercise 1/Statistics_survey_PMBA_2017_PU2_reduced.csv', header = TRUE)
+
+```
+
+__Task 8.__ Inspect the loaded file by using the str() function to show a summary of the data object’s structure.
+
+```{r task8, error=TRUE}
+
+str(dtvfile)
+```
+
+__Task 9.__ Inspect the data by looking at the first few entries and the last few entries in the dataset. Use the function head() which shows the first N rows of the dataframe. Use the tail() function that shows the last N rows.
+
+```{r task9, error=TRUE}
+
+head(dtvfile)
+tail(dtvfile)
+
+```
+
+__Task 10a.__ Determine the mean value for all numeric variables.
+
+__HINT:__ _If you run into issues with missing values, use the na.rm = TRUE parameter for mean()_
+
+```{r task10a, error=TRUE}
+
+means <- c( mean(dtvfile$age, na.rm = TRUE ), 
+            mean(dtvfile$inhabitants, na.rm = TRUE ), 
+            mean(dtvfile$drinks, na.rm = TRUE ),
+            mean(dtvfile$lextale, na.rm = TRUE))
+
+means
+
+round(means,2)
+    
+
+```
+
+__Task 10b.__ Explain why it is possible that the mean value of some variables is not a value that was observed in the set of values?
+
+The formula for mean is: sum of element / count of elements.
+
+__Task 10c.__ Determine the standard deviation of two variables of your liking.
+
+__HINT:__ _Removing missing values works the same way as it does for mean._
+
+
+```{r task10c, error=TRUE}
+
+
+sdeviation <- c(sd(dtvfile$age, na.rm = TRUE),
+                sd(dtvfile$inhabitants, na.rm = TRUE))
+
+round(sdeviation, 2)
+
+
+
+```
+
+__Task 11a.__ Make a subset of data where only those who drank more than fifteen beers are stored, and call this dataframe: “heavy_drinkers”. After doing so, make a second subset in which only the ages of participants that are considered heavy drinkers are stored, and call this subset “heavy_drinkers_age”.
+
+```{r task11, error=TRUE}
+
+heavy_drinkers <- dtvfile[dtvfile$drinks > 15, ]
+heavy_drinkers_age <- heavy_drinkers$age
+
+heavy_drinkers_age
+
+
+```
+
+__Task 11b.__ What is the mean age of participants who drank more than fifteen drinks?
+
+22.66667
+
+__Task 11c.__ What is the mean age difference between participants that drank more than fifteen drinks, and those who had less than or equal to fifteen drinks? Round your answer to two decimal places.
+
+
+
+```{r task11c, error=TRUE}
+
+heavy_drinkers <- dtvfile[dtvfile$drinks > 15, ]
+slow_drinkers <- dtvfile[dtvfile$drinks <= 15, ]
+heavy_drinkers_age <- heavy_drinkers$age
+slow_drinkers_age <- slow_drinkers$age
+age_difference <- mean(heavy_drinkers_age, na.rm = TRUE) - mean(slow_drinkers_age, na.rm = TRUE)
+round(age_difference, 2)
+```
+
+__Task 11d.__ Compare the standard deviations for those who are not heavy drinkers to the standard deviation of all numeric variables in the “heavy_drinkers” variable. What do you notice, and can you explain what has happened? 
+
+
+```{r task11d, error=TRUE}
+
+heavy_drinkers <- dtvfile[dtvfile$drinks > 15, ]
+slow_drinkers <- dtvfile[dtvfile$drinks <= 15, ]
+sd(heavy_drinkers$age, na.rm = TRUE) - sd(slow_drinkers$age, na.rm = TRUE) 
+sd(heavy_drinkers$inhabitants, na.rm = TRUE) - sd(slow_drinkers$inhabitants, na.rm = TRUE) 
+sd(heavy_drinkers$drinks, na.rm = TRUE) - sd(slow_drinkers$drinks, na.rm = TRUE)
+sd(heavy_drinkers$lextale, na.rm = TRUE) - sd(slow_drinkers$lextale, na.rm = TRUE)
+
+
+
+
+
+```
+
+__Task 12a.__ Use the psych::describe() function to get more descriptive statistics
+
+```{r task12a, error=TRUE}
+
+psych::describe(dtvfile)
+
+```
+
+__Task 12b.__ Determine if any of the variables might be skewed. If so, indicate which variables are.
+
+All of the variables are skewed they all have either a negative or a positive value. Therefore it is accurate to say that all of the variables have a skewness value.
+
+__Task 12c.__ Summarize in your own words what it means for a variable to be skewed.
+
+The meaning of a variable being positively skewed means outliers are located on the right side of the table. A long tail to the right also shows that the variable has a positive skewness value.
+
+__Task 13a.__ Try to get the descriptive statistics per gender using another function from the psych package.
+
+```{r task13a, error=TRUE}
+
+psych::describeBy(dtvfile, group = dtvfile$gender)
+
+
+```
+
+__Task 13b.__ Which gender drank more?
+
+Male participants drank more.
+
+
+__Task 13c.__ Describe what you notice regarding the kurtosis per group, and explain what this means.
+
+Females seem to have higher kurtosis on average upon their variables. Which means that the values in those variables are more centered around the mean, which results in a very “pointy” histogram.
+
+__Task 14.__ Based on the past exercises and your newly acquired skills, fill in the blanks.
+
+In total, 94 respondents from 3 different countries (China, Netherlands and Italy; 12 respondents were from other countries) completed the survey (21 males and 73 females). Their mean age was 22.4 years (SD = 3.87). Of these respondents, 12 did a language related bachelor, 27 did a media related bachelor, and 55 did a different bachelor (or did not do a bachelor yet). On average, respondents drink 5.76 units of alcohol per week (SD = 6.27) and their mean score on the LexTale test of English was 74.35 (SD = 11.02). 21 respondents do not drink any alcohol. Male respondents drink more units of alcohol per week (M = 8.57, SD = 6.45) than female respondents (M = 4.94, SD = 6.02)
