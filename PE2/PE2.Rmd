@@ -1,0 +1,119 @@
+---
+title: 'Practical Exercise 2 | Statistics for Premasters DSS/CSAI'
+author: Hilal Caliskan Egilli u927185 
+output:
+  pdf_document: default
+  word_document:
+    reference_docx: reference_tasks.docx
+---
+
+The objective of this practical exercise is to get you accustomed to some data wrangling and visualisation methods within R. You may use your own style of visualisation (as long as you use R). If you want to make visualisations with ggplot, you can make use of the cheat sheet and learning resources here: https://ggplot2.tidyverse.org/.
+
+\vspace{5mm}
+
+__Task 1.__ Load the data set from the following file: `cars_df.csv`. You can import the file using read.csv(), or by using the "Import Dataset" tab. The file is included in the PE 2 zip folder. The dataset contains a random sample drawn from a large set of cars sold in Spain. Go ahead and do a bit of data exploration on the dataset, like creating a summary.
+
+```{r task1, error=TRUE}
+library(lsr)
+library(psych)
+thedata <- read.csv("/Users/hilalcaliskan/Documents/PM_DSS_ Assignments/CSAI/Practical Exercise 2/cars_df.csv")
+colnames(thedata)
+head(thedata)
+tail(thedata)
+
+
+```
+
+__Task 2a.__ Generate a bar graph that plots the mean value of car price and is organized by gear type. Be sure to include appropriate labels (meaningful title and label names). Include the plot in your answer.
+
+```{r task2a, error=TRUE}
+library(lsr)
+thedata$gear_type <- as.factor(thedata$gear_type)
+bars(formula = price ~ gear_type, 
+     data = thedata, 
+     yLabel = "price", 
+     xLabels = c("None", "Automatic", "Manuel","Semi-Automatic"), 
+     main="car price vs gear type")
+
+
+```
+
+__Task 2b.__ Which gear type has the highest mean price?
+
+Automatic
+
+__Task 3a.__ Generate a bar graph that plots the mean value of price and is organized by fuel type. Make sure to include error bars, and some appropriate labels. Include the plot in your answer. 
+
+__HINT:__ _Error bars are included in the bars() function within the lsr package by default._
+
+```{r task3a, error=TRUE}
+
+library(lsr)
+thedata$fuel_type <- as.factor(thedata$fuel_type)
+bars(formula = price ~ fuel_type, data = thedata,
+     yLabel= "Price",
+     xLabels = c("diesel", "gasoline"),
+     main = "price vs fuel type")
+
+
+```
+
+__Task 3b.__ Which fuel type has the highest level of confidence over the mean price value? Why is this confidence level higher?
+
+Diesel has the highest confidence as the confidence interval is more narrow.
+
+__Task 4.__ Create a scatterplot with power (hp) on the x-axis and price on the y-axis. Be sure to include appropriate labels and add the plot in your answer.
+
+```{r task4, error=TRUE}
+
+plot(x = thedata$power, y = thedata$price,
+     ylab = 'Price',
+     xlab = 'Power',
+     main = "Horsepower in Relation to Price")
+
+`````````
+
+__Task 5.__ Create a scatterplot of months_old on the x-axis and price on the y-axis. Be sure to add appropriate labels and include the plot in your answer.
+
+```{r task5, error=TRUE}
+
+plot(price ~ months_old, data = thedata, # The dependent variable goes first
+     main = "The Effect of Car Age on Car Price",
+     xlab = "Age in months",
+     ylab = "Price in dollars")
+
+## Alternatively, we can specify the x and y axis like this instead of the formula: 
+
+plot(x = thedata$months_old, y = thedata$price, # The dependent variable is the y variable
+     main = "The Effect of Car Age on Car Price",
+     xlab = "Age in months",
+     ylab = "Price in dollars")
+
+```
+
+__Task 6.__ Based on the plots, what can you say about the relationship between variables: power and price (task 4), and, months_old and price (task 5). Which relationship seems stronger? 
+
+_We will talk about correlation in later lectures. For now our intuition is fine._
+
+
+Visualisation 1: More power results in higher price. Visualisation 2: A car becomes cheaper over time.
+
+
+__Task 7a.__ Make a histogram of the price variable that features coloured bars and appropriate labels. Include the plot here. 
+
+```{r task7a, error=TRUE}
+
+hist(x = thedata$price,
+     main = "Price Dispersion of Cars",
+     xlab = "Price",
+     breaks = 40,
+     density = 20,
+     col = c("green", "red", "salmon"))
+
+```
+
+__Task 7b.__ Based on your histogram, what can you say about the distribution of the price values?
+
+That the prices might be very skewed to the positive side. Most car prices are in the under 25k category.
+
+
