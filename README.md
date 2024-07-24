@@ -6,7 +6,7 @@
 
 .
 ├── PE-1
-│   ├── PE1.Rmd
+│   ├── [PE1.Rmd](https://github.com/caliskannhilal/DSS-CSAI/blob/main/PE1.Rmd)
 │   └── PE1.pdf
 ├── PE-2
 │   ├── subfolder1
