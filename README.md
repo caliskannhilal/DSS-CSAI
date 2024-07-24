@@ -5,7 +5,7 @@
 ```These folders contain R markdown files and knitted PDF's of 6 assignments from my previous Statistics for Premasters DSS/CSAI lecture in Pre-Master's Data Science and Society program in Tilburg University.
 .
 ├── PE-1
-│   ├── PE1[PE1.Rmd](https://github.com/caliskannhilal/DSS-CSAI/blob/main/PE1.Rmd)
+│   ├── PE1[PE1.Rmd](https://github.com/caliskannhilal/DSS-CSAI/blob/9bced207a3307788731a163865021329e33953f7/PE1.Rmd)
 │   └── PE1.pdf
 ├── PE-2
 │   ├── subfolder1
