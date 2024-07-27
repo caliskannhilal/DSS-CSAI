@@ -1,0 +1,294 @@
+---
+title: 'Practical Exercise 4 | Statistics for Premasters DSS/CSAI'
+author: "Hilal Caliskan Egilli_u927185" 
+output:
+  pdf_document: default
+  word_document:
+    reference_docx: reference_tasks.docx
+---
+
+### Part A - Chi-Squared Tests
+
+For this part of the practical exercise, we are going to load the data using R. You
+can do so by installing and loading the package "DAAG", and then using the function data(ais). Your data will be stored under the name "ais". 
+
+We will be using statistical tests from the "lsr" package, so let's also load lsr here using library(lsr).
+
+__Task 1.__ Load and inspect the dataset.
+
+```{r task1, error=TRUE}
+
+#install.packages("DAAG")
+library(DAAG)
+library(lsr)
+
+#Read in the data
+data(ais)
+
+#We inspect the data:
+head(ais)
+```
+
+__Task 2.__ Compute a general test for Goodness of Fit for the sport variable from the “ais” data set.
+
+```{r task2, error=TRUE}
+
+#General tests for Goodness of Fit 
+goodnessOfFitTest(ais$sport)
+
+#Quite significant results, when expecting equal probabilities
+```
+
+__Task 3.__ Print a table of the sports in the dataset.
+
+```{r task3, error=TRUE}
+
+table(ais$sport)
+
+```
+
+__Task 4.__ We are interested in a subset of the data which includes all sports except for "Gym", "W_Polo" and "Netball". Do the following to prepare the data frame:
+
+- Make a subset of your data frame that excludes the three factor levels of "sport" we do not need, you can call the new data frame "excludeSport". 
+
+- Use droplevels() on the sport variable in "excludeSport" to remove the now empty levels.
+
+- Inspect the "excludeSport" data frame to see if everything went as expected.
+
+__HINT:__ _You can use the subset() function with a != operator to exclude specific values of a variable. You can exclude all of the values at once by adding & between each conidition._
+
+```{r task4, error=TRUE}
+
+# Get factors of sports out which we do not need
+excludeSport <- subset(ais, sport != "Gym" & sport != "W_Polo" & sport != "Netball")
+
+# The %in% operator can also be used to create this subset:
+# excludeSport <- subset(ais, !sport %in% c("Gym", "W_Polo", "Netball"))
+
+# We drop the levels (otherwise this would impact our df, and test statistic)
+excludeSport$sport <- droplevels(excludeSport$sport)
+
+# We re-check the new dataset where factors are dropped
+table(excludeSport$sport)
+```
+
+__Task 5.__ Now, create two subsets in order to do individual tests for males and females.
+
+__HINT:__ _You would have to subset the “excludeSport” data frame again. After that, check the female and male data frames to see if they are smaller now._
+
+```{r task5, error=TRUE}
+
+#Make two subset to do invidual tests
+Females <- excludeSport[excludeSport$sex == "f", ]
+Males <- excludeSport[excludeSport$sex == "m", ]
+
+#Check if our datasets are smaller now
+nrow(Males)
+nrow(Females)
+```
+
+__Task 6a.__ Write down the null and alternative hypotheses for the male and female data sets. 
+
+
+- H0: No difference between distributions of males and females
+- H1: Difference between distributions of males and females
+
+__Task 6b.__ Calculate the critical value, which would aid you in determining whether you can reject the null hypothesis or not (you could use the qchisq() function for this).
+
+```{r task6b, error=TRUE}
+
+qchisq(0.95, df = 6)
+
+```
+
+__Task 7.__ Do individual tests on the male and female subsets to determine whether each sport has an equal probability of being played.
+
+__HINT:__ _The goodnessOfFitTest() tests for equal probabilities by default._
+
+```{r task7, error=TRUE}
+
+goodnessOfFitTest(Males$sport)
+
+goodnessOfFitTest(Females$sport)
+```
+
+__Task 8.__ Check if the female distribution is similar to the male distribution using the chi-squared test of association.
+
+```{r task8, error=TRUE}
+
+associationTest(~sport + sex, excludeSport)
+
+```
+
+__Task 9a.__ Load and inspect the “Salaries” data set from “carData” package. Assign the data set “Salaries” to the “salaries” variable.
+
+```{r task9a, error=TRUE}
+library(lsr)
+
+#Let's load in the data
+salaries <- carData::Salaries
+
+#Look at the variables in the data set
+colnames(salaries)
+```
+
+__Task 9b.__ Test the following hypotheses:
+
+- H0: There is no difference in rank between males and females.
+- H1: There is a difference in rank between males and females
+
+```{r task9b, error=TRUE}
+
+table(salaries$rank, salaries$sex)
+
+#We put both variables after the ~, as we are not dealing with dependent variables.
+associationTest(~ rank + sex, data = salaries)
+
+```
+
+__Task 10.__ Explain whether we reject, or fail to reject H0. Report the relevant statistics in APA format.
+
+An Association Test was conducted, based on which the null was rejected. $\chi^2$(2) = 8.526, _p_ = 0.01. The effect size of 0.147 is considered small.
+
+\vspace{5mm}
+
+
+### Part B: Analyzing Results
+
+For this part of the assignment, consider the results from:
+
+a) Task 7
+b) Task 8
+c) Task 10
+
+__Task 11.__ Analyze the results you obtained based on the factors listed under “Don’t List” from the “Where do we go from here?” lecture slides in Module 6. Be sure to include elements from the article “Moving to a world beyond p<0.05” in your analysis (such as compatibility intervals).
+
+For this part of the task, multiple elements could have been analyzed.
+
+A possible interpretation could have been centered around the p-values obtained from the tasks. For the p-values that were close to the threshold of 0.05, it could have been pointed out that it is in general not a good practice to solely base conclusions on whether an association/effect was found to be "statistically significant" based on an arbitrary threshold (p<.05). 
+
+__Task 12.__ Analyze the results based on the ATOMIC (Wasserstein et al., 2019) factors.
+
+For the ATOMIC factors, a good response would have taken one or more of them and briefly interpret the results according to the principles stated. For instance, if the "Thoughtful" ATOMIC factor would have been addressed, a few answers could have been added to questions such as "What are the practical implications of the estimate?", "How precise is the estimate?", "Is the model correctly specified?". A brief response to these questions based on the limited available information of the statistical test results would have sufficed.
+
+
+\vspace{5mm}
+
+
+### Part C: Various Tests
+
+For this part we will be using a dataset which represents a sample of 397 University Professors in the U.S. (https://www.rdocumentation.org/packages/carData/versions/3.0-4/topics/Salaries).
+
+In order to load in the data, you have to run the following line of code: "salaries <- carData::Salaries"
+
+Make sure you have the carData package installed!
+
+__Task 13.__ Load and inspect the data.
+
+```{r task13, error=TRUE}
+salaries <- carData::Salaries
+summary(salaries)
+head(salaries)
+tail(salaries)
+
+```
+
+__Task 14a.__ Check the yrs.since.phd variable. What is the difference in salary of the professor (you can include assistant and associate professors) with the highest yrs.since.phd and lowest yrs.since.phd? 
+
+```{r task14a, error=TRUE}
+
+youngest_prof <- salaries[salaries$yrs.since.phd == min(salaries$yrs.since.phd), ]
+
+oldest_prof <- salaries[salaries$yrs.since.phd == max(salaries$yrs.since.phd), ]
+
+#There seem to be more professors with a similar z-score (due to rounding of years)
+nrow(youngest_prof)
+nrow(oldest_prof)
+
+difference_salary <- abs(mean(oldest_prof$salary) - mean(youngest_prof$salary))
+
+print(difference_salary)
+
+#We see that there is a wage gap of $50584.25 between the oldest and youngest professors 
+```
+
+__Task 14b.__ What is the range between the highest- and lowest salary in the dataset?
+
+```{r task14b, error=TRUE}
+
+diff_salary <- max(salaries$salary) - min(salaries$salary)
+print(diff_salary)
+```
+
+__Task 15a.__ Check the assumption of normality for the salary variable, first by using visual inspection with a histogram and a Q-Q plot, and then by using the Shapiro-Wilk significance test.
+
+__HINT__: _The functions you need besides the histogram are car::qqPlot() and shapiro.test()._
+
+_The null hypothesis for shapiro.test() is that the data is normally distributed._
+
+_A Q-Q plot for normally distributed data would have most of the quantiles lined up along the guiding diagonal line in the center._
+
+```{r task15a, error=TRUE}
+
+#Histogram looks quite normal
+hist(salaries$salary)
+
+#QQ plot looks quite normal as well
+car::qqPlot(salaries$salary)
+
+#Shapiro-Wilk test indicates non-normality
+shapiro.test(salaries$salary)
+```
+
+__Task 15b.__ Would you say that the assumption of normality is met?
+
+The histogram and Q-Q plot both appear relatively normal, however the Shapiro-Wilk test indicates non-normality. The Shapiro-Wilk test can sometimes be overly sensitive, so if the visual tests indicate normality, we can still proceed with a parametric test. If in doubt, we can use a non-parametric test as well and compare the results.
+
+
+__Task 16.__ (Performing t-test) - Use a t-test to test the following hypotheses:
+
+- H0: The salary between male professors and female professors is equal.
+- H1: The salary between male professors and female professors is not equal
+
+```{r task16, error=TRUE}
+
+#Welch's
+independentSamplesTTest(salary ~ sex, data = salaries)
+
+#Student's
+independentSamplesTTest(salary ~ sex, data = salaries, var.equal = TRUE)
+```
+
+__Task 16a.__ Which t-test did you use, and why?
+
+Preferably independentSamplestTTest (Welch's). We prefer Welch's over Student's as Welch's does not assume homogeneity of variance.
+
+__Task 16b.__ Explain whether you have to accept or reject H0 based on your sample. Report the relevant statistics in APA format (max 100 words)
+
+An Independent Samples T-test (Welch's) was conducted in which the null has been evaluated. T-test results show that there is a difference between the salary of males ( _M_ = 115,090.42, _SD_ = 30,436.93) and the salaries of females ( _M_ = 101,002.41, _SD_ = 25,952.13), _t_(50.12) = 3.16, _p_ = 0.003, CI95 = [-23,037.92, -5,138.1]. The Cohen's _D_ (0.5) effect size appeared to be medium sized.
+
+__Task 16c.__ What are the assumptions of the different t-tests we mentioned during class (max 200 words)?
+
+One Sample T-Test
+
+- The dependent variable must be continuous
+- The dependent variable must be normally distributed
+- The observations must be independent from each other
+
+Independent Samples T-Test (Student's)
+
+- The dependent variable must be continuous
+- The dependent variable must be normally distributed
+- The observations must be independent from each other
+- The variance is expected equal in both groups
+
+Independent Samples T-Test (Welch's)
+
+- The dependent variable must be continuous
+- The dependent variable must be normally distributed
+- The observations must be independent from each other
+
+Paired Samples T-Test
+
+- The differences between matched pairs must be normally distributed
+
