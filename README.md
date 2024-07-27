@@ -5,7 +5,7 @@
 ```These folders contain R markdown files and knitted PDF's of 6 assignments from my previous Statistics for Premasters DSS/CSAI lecture in Pre-Master's Data Science and Society program in Tilburg University.
 .
 ├── PE-1
-│   ├── [PE1](PE1/PE1.Rmd)
+│   ├── [PE1](../PE1/PE1.Rmd)
 │   └── PE1.pdf
 ├── PE-2
 │   ├── subfolder1
