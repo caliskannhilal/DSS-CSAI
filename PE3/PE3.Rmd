@@ -1,0 +1,279 @@
+---
+title: 'Practical Exercise 3 | Statistics for Premasters DSS/CSAI'
+author: "Hilal Caliskan Egilli_u927185" 
+output:
+  pdf_document: default
+  word_document:
+    reference_docx: reference_tasks.docx
+---
+
+### Part A - Cleaning a Dataset
+
+Load the untidy_spanish_vow.csv data file. The file is included in the PE 3 zip folder. This includes the simulated data of vowel formants produced by male and female Spanish speakers. You can find more information about vowel formants here: https://www.britannica.com/science/phonetics/Vowel-formants.
+
+```{r task0, error=TRUE}
+spanishdata <- read.csv("/Users/hilalcaliskan/Documents/PM_DSS_ Assignments/CSAI/Practical Exercise 3/untidy_spanish_vow.csv")
+str(spanishdata)
+summary(spanishdata)
+head(spanishdata)
+tail(spanishdata)
+nrow(spanishdata)
+#Your code here
+
+```
+
+__Task 1a.__ Based on the past practical assignments and your newly acquired skills, inspect the data set and check out its variables. You can include any graphs that would allow you to get a better understanding of the data set.
+
+```{r task1, error=TRUE}
+
+summary(spanishdata)
+psych::describe(spanishdata)
+hist(spanishdata$f1)
+hist(spanishdata$f2)
+
+```
+
+__Task 1b.__ Try to provide a brief description of the data set _(in your own words)_.
+
+The “rep” column is saying how many times we did something. Then, “f1” and “f2” which are just numbers, probably measurements or similar. And names like “p01-male-a” are just labels for different groups or categories, maybe different people or situations we’re looking at. So, each row is like a combination of how many times we did it, which group it’s from, and what the measurements were. It’s probably from some kind of study or experiment.
+
+
+__Task 2.__ Based on the inspection, it seems that the “label” variable seems most problematic. Split it into three variables: id, gender, and vowel. Now examine the head() of the data and print it here.
+
+__HINT:__ _For this task, you can use the tidyr::separate function. The arguments you need are the data frame, the variable you want to split (label), the “into” argument which specifies the new variable names, and a “sep” argument, which tells the function where the splitting point should be (in this case '-')._
+
+```{r task2, error=TRUE}
+
+spanishdata<-tidyr::separate(spanishdata, 
+                                label, 
+                                into=c("id","gender","vowel"), 
+                                sep="-")
+
+head(spanishdata)
+
+```
+
+__Task 3.__ Now convert gender and vowel type into factors.
+
+```{r task3, error=TRUE}
+
+spanishdata$vowel <- as.factor(spanishdata$vowel)
+spanishdata$gender <- as.factor(spanishdata$gender)
+
+class(spanishdata$vowel)
+
+class(spanishdata$gender)
+
+```
+
+__Task 4.__ Use rbind() to convert the f1 and f2 variables to long format by combining the two columns. Add your code here.
+
+__HINT:__ _To use rbind(), you will need two copies of the data frame: one where you drop f1 and another where you drop f2. The columns being combined need to have the same name, so rename the remaining f column in both datasets to "frequency". Now, you can use rbind() with the names of your two data frames._
+
+
+```{r task4, error=TRUE}
+
+#Two data frames one with f1, and the other with f2.
+f1 <- spanishdata[, -6]
+f2 <- spanishdata[, -5]
+
+#Rbind() requires the columns to have the same names, 
+#so both are given a generic name, such as "frequency".
+colnames(f1)[5] <- "frequency"
+colnames(f2)[5] <- "frequency"
+
+#Now we can combine our two data frames into one:
+spanishdata2 <- rbind(f1, f2)
+```
+
+__Task 5.__ How many rows do you have in your data frame now?
+
+```{r task5, error=TRUE}
+
+nrow(spanishdata2)
+
+```
+
+__Task 6.__ Create a recoded version of the variable that you converted to long format (frequency). The recoded variable should replace values of frequency with ‘lower’ if they are less than the mean of frequency, and ‘higher’ if they are greater than the mean or equal to the mean.
+
+__HINT:__ _After finding the mean of frequency, create a new column for the recoded frequency, where you convert values to 'lower'/'higher' based on a comparison to the mean. You can do this in two separate lines by using logical operators._
+
+_For example, the following line would recode only values smaller than 10: data\$new_column[data\$old_column < 10] <- 'less_than_10'._
+
+```{r task6, error=TRUE}
+
+mean_span <- mean(spanishdata2$frequency)
+spanishdata2$frequency_recode[spanishdata2$frequency<mean_span]<-"lower"
+spanishdata2$frequency_recode[spanishdata2$frequency>=mean_span]<-"higher"
+
+```
+
+__Task 7.__ How many recoded values are higher than the mean? And how many are lower than the mean?
+
+```{r task7, error=TRUE}
+
+table(spanishdata2$frequency_recode)
+
+```
+
+__Task 8.__ Imagine you want to conduct some research. Your experimental condition consists of administering the participants a placebo and then record their response times to a visual cue.
+
+For the same experimental condition, you think about using either of the two strategies:
+
+- Strategy A would be tak<ing a sample of 1000 participants. 
+- Strategy B would consist of taking a more restricted sample of only 100 participants. 
+
+In general (without considering other factors) which approach would you think would be more reliable? And what would be a good indicator of how much more reliable one approach is over the other? Explain in your own words.
+
+Strategy A, with 1000 participants, would likely be more reliable than Strategy B with 100 participants. More participants generally mean more accurate results. Comparing the margin of error(__standard error__) between the two strategies can show how much more reliable Strategy A is.
+
+__Task 9.__ For the following claims, assign True or False and briefly explain your reasoning.
+
+Given a sufficiently sized sample, which of the following are True?
+
+__Task 9a.__ With increasing sample size, the mean of the sampling distribution becomes a better estimate of the mean of the population.
+
+True
+
+__Task 9b.__ The shape of the sampling distribution becomes less normal as the sample size increases.
+
+False
+
+__Task 9c.__ The standard deviation of the sampling distribution gets bigger as the sample size increases.
+
+False
+
+__Task 10.__  Imagine you run an experiment and have obtained the following values:
+
+- Sample mean = 12.30
+- The hypothesised population mean under the null hypothesis = 10.00
+- Standard error = 1.5
+
+What would be the test statistic in this case (e.g. the z-score)? Compute it and include the formula you used and offer a brief explanation of your thinking process.
+
+$$
+\text{test statistic} = \frac{\text{estimate} - \text{value we hypothesise}}{\text{standard error}}
+$$
+
+\vspace{5mm}
+
+
+### Part B: Z-tests
+
+For this part we will be using a dataset which consists of 202 Australian athletes. Before you rush into the assignment, it is advised to start with functions that help you understand the data. It will make your life a lot easier if you are able to identify variables quickly. For more clarification on the variables: https://www.rdocumentation.org/packages/DAAG/versions/1.24/topics/ais
+
+For this exercise, we are going to load the data using R. You can do so by installing and loading the package "DAAG", and by using the function: "data(ais)". After doing this, you will have a data frame named "ais" which you can either work with directly or rename as you wish. 
+
+```{r task11-setup, error=TRUE}
+#install.packages("DAAG")
+data(ais)
+data<-(ais)
+head(data)
+```
+
+__Task 11a.__ Compute the z-scores for athlete 163 (x = 163) for the following variables: body mass index, percentage body fat, lean body mass and height.
+
+```{r task11a, error=TRUE}
+# The z-scores of the mentioned variables
+data$bmiZ <- (data$bmi - mean(data$bmi))/ sd(data$bmi)
+data$pcBfatZ <- (data$pcBfat - mean(data$pcBfat))/ sd(data$pcBfat)
+data$lbmZ <- (data$lbm - mean(data$lbm))/ sd(data$lbm)
+data$htZ <- (data$ht - mean(data$ht))/ sd(data$ht)
+
+# The z-scores for athlete
+data$bmiZ[163] #4.002 - Body mass index
+
+data$pcBfatZ[163] #0.065 - Percentage of body fat
+
+data$lbmZ[163] #3.146 - Lean body mass
+
+data$htZ[163] #0.934 - Height
+```
+
+__Task 11b.__ Based on the observed z-scores what can you say about athlete 163?
+
+Athlete 163 must be very muscular. He is quite heavy but has a low percentage of body fat.
+
+__Task 12a.__ Get the mean values for all numeric variables for athletes that engaged in the sport rowing.
+
+__HINT:__ _You can use colMeans() if you remove the non-numeric variables._
+```{r task12a, error=TRUE}
+
+#Make a subset that only includes rowers
+Rowing <- data[data$sport == "Row", ]
+
+#Remove non-numeric columns for colMeans, 
+#The - means we exclude the columns instead of including them
+Rowing_numeric <- subset(Rowing, select = -c(sex, sport))
+
+colMeans(Rowing_numeric)
+
+```
+
+__Task 12b.__ Compare the mean values of those who engaged in the sport rowing, to those who did not. Report your findings with a 95% confidence interval (you can use lsr::ciMean() for this). 
+
+__HINT:__ _The lsr::ciMean() function includes the 95% confidence interval by default._
+
+
+```{r task12b, error=TRUE}
+
+NonRowing <- data[data$sport != "Row", ]
+
+lsr::ciMean(Rowing$rcc)
+
+lsr::ciMean(NonRowing$rcc)
+
+lsr::ciMean(Rowing$wcc)
+
+lsr::ciMean(NonRowing$wcc)
+
+lsr::ciMean(Rowing$hc)
+
+lsr::ciMean(NonRowing$hc)
+
+```
+
+__Task 12c.__ What are the major differences between these two groups? 
+
+Look for non-overlapping regions.
+
+__Task 12d.__ Explain what would happen to the boundaries of the confidence interval if the number of respondents increases.
+
+The boundaries would get smaller.
+
+__Task 12e.__ Explain what would happen to the boundaries of the confidence interval if variance increases.
+
+The boundardies would get larger.
+
+__Task 13a.__ Compare the average BMI in the Netherlands of 25.4 (WHO, 2014) with the average BMI in the dataset. Use the standard deviation of the sample you currently have to perform a z-test.
+
+__HINT:__ _You can either make use of the z.test() function in the BSDA package, or use the formula for calculating a z-score._
+
+```{r task13a, error=TRUE}
+
+average_BMI <- 25.4
+average_BMI_ais <- mean(data$bmi)
+sd_BMI_ais <- sd(data$bmi)
+
+average_BMI
+
+average_BMI_ais
+
+z <- (average_BMI_ais - average_BMI) / (sd_BMI_ais/ sqrt(nrow(ais)))
+z
+```
+
+__Task 13b.__ What can you conclude based on the test statistic?
+
+That the average BMI of Dutch people is most likely different than the BMI of the Australian athletes.
+
+__Task 13c.__ _Null: "There is no difference in BMI between Dutch citizens and Australian athletes."_
+
+How do we treat the null hypothesis mentioned above, and why? 
+
+Based on the test-statistic (-12.12), we can reject the null hypothesis because using a 95% confidence interval, the calculated z-score falls outside of the zone between the critical values of -1.96 and 1.96.
+
+
+
+
+
