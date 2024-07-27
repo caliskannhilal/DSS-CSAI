@@ -9,17 +9,17 @@ These folders contain R markdown files and knitted PDF's of 6 assignments from m
 │   └── PE1.pdf <br />
 ├── PE-2 <br />
 │   ├── subfolder1 <br />
-│   └── subfolder2
-├── PE-3
-│   ├── subfolder1
-│   └── subfolder2
-├── PE-4
-│   ├── subfolder1
-│   └── subfolder2
-├── PE-5
-│   ├── subfolder1
-│   └── subfolder2
-└── PE-6
-    ├── subfolder1
-    └── subfolder2
+│   └── subfolder2 <br />
+├── PE-3 <br />
+│   ├── subfolder1 <br />
+│   └── subfolder2 <br />
+├── PE-4 <br />
+│   ├── subfolder1 <br />
+│   └── subfolder2 <br />
+├── PE-5 <br />
+│   ├── subfolder1 <br />
+│   └── subfolder2 <br />
+└── PE-6 <br />
+    ├── subfolder1 <br />
+    └── subfolder2 <br />
 
